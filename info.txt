@@ -1,0 +1,9 @@
+O snapshot vai funcionar mesmo com o swap ativo. O btrfs só proíbe snapshot do subvolume que contém o swapfile em uso, que é o @swap, e o snapper só tira snapshot do @.
+
+Depois de reiniciar, se quiser conferir, rode:
+
+swapon --show                               # zram deve mostrar ~15G, prioridade 100
+sudo snapper -c root list | tail -3         # o snapshot novo deve aparecer
+sudo ls /.snapshots/<N>/snapshot/swap       # deve estar vazio (troque <N> pelo número do snapshot)
+
+A pasta swap vazia dentro do snapshot é a prova de que o swapfile ficou fora. Os dois comandos com sudo precisam ser rodados no terminal normal, como o script, porque o ! daqui não consegue pedir a senha.
